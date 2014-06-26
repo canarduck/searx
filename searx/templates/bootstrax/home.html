@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+    <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{% block title %}{% endblock %}searx</title>
+        <meta name="description" content="Searx - a privacy-respecting, hackable metasearch engine" />
+        <meta name="keywords" content="searx, search, search engine, metasearch, meta search" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <script src="{{ url_for('static', filename='js/vendor/modernizr-2.6.2-respond-1.1.0.min.js') }}" ></script>
+        {% block styles %}
+        {% endblock %}
+        {% block head %}
+        <link title="searx" type="application/opensearchdescription+xml" rel="search" href="{{ url_for('opensearch') }}"/>
+        {% endblock %}
+        <script type="text/javascript">
+            searx = {};
+            searx.autocompleter = {% if autocomplete %}true{% else %}false{% endif %};
+        </script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+
+            <footer>
+                <p>{{ _('Powered by') }} <a href="https://github.com/asciimoo/searx">Searx</a> - a privacy-respecting, hackable metasearch engine</p>
+            </footer>
+        </div> <!-- /container -->
+        
+        <script src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/searx.js') }}"></script>
+    </body>
+</html>

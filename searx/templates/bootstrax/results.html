@@ -1,0 +1,83 @@
+{% extends "bootstrax/base.html" %}
+{% block title %}{{ q }} - {% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-md-8" id="main_results">
+            {% if suggestions %}
+            <div id="suggestions">
+                {{ _('Suggestions') }}
+                {% for suggestion in suggestions %}
+                <form method="{{ method or 'POST' }}" action="{{ url_for('index') }}" role="navigation">
+                    <input type="hidden" name="q" value="{{ suggestion }}">
+                    <button type="button" class="btn btn-link">{{ suggestion }}</button>
+                </form>
+                {% endfor %}
+            </div> <!-- /#suggestions -->
+            {% endif %}
+
+
+            <ul class="media-list">
+            {% for result in results %}
+                {% if result['template'] %}
+                    {% include 'bootstrax/result_templates/'+result['template'] %}
+                {% else %}
+                    {% include 'bootstrax/result_templates/default.html' %}
+                {% endif %}
+            {% endfor %}
+            </ul>
+
+            {% if paging %}
+            <ul class="pagination">
+                {% if pageno > 1 %}
+                <li>
+                    <form method="{{ method or 'POST' }}" action="{{ url_for('index') }}">
+                        <input type="hidden" name="q" value="{{ q }}" />
+                        {% for category in selected_categories %}<input type="hidden" name="category_{{ category }}" value="1"/>{% endfor %}
+                        <input type="hidden" name="pageno" value="{{ pageno-1 }}" />
+                        <input type="submit" value="<< {{ _('previous page') }}" />
+                        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-backward"></span> {{ _('previous page') }}</button>
+                    </form>
+                </li>
+                {% endif %}
+                <li>
+                    <form method="{{ method or 'POST' }}" action="{{ url_for('index') }}">
+                        {% for category in selected_categories %}<input type="hidden" name="category_{{ category }}" value="1"/>{% endfor %}
+                        <input type="hidden" name="q" value="{{ q }}" />
+                        <input type="hidden" name="pageno" value="{{ pageno+1 }}" />
+                        <input type="submit" value="{{ _('next page') }} >>" />
+                        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-forward"></span> {{ _('next page') }}</button>
+                    </div>
+                </form>
+                </li>
+            </ul><!-- /.pagination -->
+            {% endif %}
+        </div><!-- /#main_results -->
+
+        <div class="col-xs-12 col-md-4" id="sidebar_results">
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ _('API') }}</div>
+                <div class="panel-body">
+                    <p>
+                    {{ _('Search URL') }}
+                    <input type="url" class="form-control" value="{{ base_url }}?q={{ q|urlencode }}&pageno={{ pageno }}{% if selected_categories %}&category_{{ selected_categories|join("&category_") }}{% endif %}">
+                    </p>
+                    <p>{{ _('Download results :') }} </p>
+                </div>
+
+                <ul class="list-group">
+                {% for output_type in ('csv', 'json', 'rss') %}
+                    <li class="list-group-item">
+                        <form method="{{ method or 'POST' }}" action="{{ url_for('index') }}">
+                            <input type="hidden" name="q" value="{{ q }}">
+                            <input type="hidden" name="format" value="{{ output_type }}">
+                            {% for category in selected_categories %}<input type="hidden" name="category_{{ category }}" value="1">{% endfor %}
+                            <input type="hidden" name="pageno" value="{{ pageno }}">
+                            <button type="submit" class="btn btn-default">{{ output_type }}</button>
+                        </form>
+                    </li>
+                {% endfor %}
+                </ul><!-- /.list-group -->
+            </div><!-- /.panel -->
+        </div><!-- /#sidebar_results -->
+    </div>
+{% endblock %}

@@ -10,6 +10,8 @@ setup.cfg
 *.pyc
 */*.pyc
 
+searx-ve/
+
 bin/
 build/
 coverage/
@@ -22,3 +24,9 @@ local/
 parts/
 searx.egg-info/
 var/
+
+*.sublime-project
+*.sublime-workspace
+*.json
+
+searx/settings.yml

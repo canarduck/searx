@@ -1,0 +1,105 @@
+{% extends "bootstrax/base.html" %}
+{% block head %} {% endblock %}
+{% block content %}
+
+    <div class="page-header">
+        <h1>{{ _('Preferences') }}</h1>
+    </div>
+
+    <div class="alert alert-info">
+        <strong>{{ _('These settings are stored in your cookies, this allows us not to store this data about you.') }}</strong>{{ _("These cookies serve your sole convenience, we don't use these cookies to track you.") }}
+    </div>
+
+    <form class="form-horizontal" role="form" method="post" action="{{ url_for('preferences') }}">
+        <div class="form-group">
+            <label for="categories" class="col-sm-2 control-label">{{ _('Default categories') }}</label>
+            <div class="col-sm-10">
+                {% include 'bootstrax/categories.html' %}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="language" class="col-sm-2 control-label">{{ _('Search language') }}</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="language">
+                    <option value="all" {% if current_language == 'all' %}selected="selected"{% endif %}>{{ _('Automatic') }}</option>
+                    {% for lang_id,lang_name,country_name in language_codes %}
+                    <option value="{{ lang_id }}" {% if lang_id == current_language %}selected{% endif %}>{{ lang_name }} ({{ country_name }} - {{ lang_id }})</option>
+                    {% endfor %}
+                </select>
+                <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="locale" class="col-sm-2 control-label">{{ _('Interface language') }}</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="locale">
+                    {% for locale_id,locale_name in locales.items() %}
+                    <option value="{{ locale_id }}" {% if locale_id == current_locale %}selected{% endif %}>{{ locale_name }}</option>
+                    {% endfor %}
+                </select>
+                <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="autocomplete" class="col-sm-2 control-label">{{ _('Autocomplete') }}</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="autocomplete">
+                    <option value="">{{ _('Disabled') }}</option>
+                    {% for backend in autocomplete_backends %}
+                    <option value="{{ backend }}" {% if backend == autocomplete %}selected{% endif %}>{{ backend }}</option>
+                    {% endfor %}
+                </select>
+                <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="method" class="col-sm-2 control-label">{{ _('Method') }}</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="method">
+                    <option value="POST" {% if method == 'POST' %}selected{% endif %}>POST</option>
+                    <option value="GET" {% if method == 'GET' %}selected{% endif %}>GET</option>
+                </select>
+                <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="theme" class="col-sm-2 control-label">{{ _('Themes') }}</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="theme">
+                    {% for name in themes %}
+                    <option value="{{ name }}" {% if name == theme %}selected="selected"{% endif %}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+                <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="theme" class="col-sm-2 control-label">{{ _('Currently used search engines') }}</label>
+            <div class="col-sm-10">
+                <table class="table">
+                    <tr>
+                        <th>{{ _('Engine name') }}</th>
+                        <th>{{ _('Category') }}</th>
+                        <th>{{ _('Allow') }} / {{ _('Block') }}</th>
+                    </tr>
+                {% for (categ,search_engines) in categs %}
+                    {% for search_engine in search_engines %}
+                        {% if not search_engine.private %}
+                        <tr>
+                            <td>{{ search_engine.name }} ({{ shortcuts[search_engine.name] }})</td>
+                            <td>{{ _(categ) }}</td>
+                            <td class="engine_checkbox">
+                                <input type="checkbox" id="engine_{{ categ }}_{{ search_engine.name|replace(' ', '_') }}" name="engine_{{ search_engine.name }}"{% if search_engine.name in blocked_engines %} checked="checked"{% endif %} />
+                                <label class="allow" for="engine_{{ categ }}_{{ search_engine.name|replace(' ', '_') }}">{{ _('Allow') }}</label>
+                                <label class="deny" for="engine_{{ categ }}_{{ search_engine.name|replace(' ', '_') }}">{{ _('Block') }}</label>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                </table>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default">{{ _('save') }}</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,7 @@
+<div class="btn-group" data-toggle="buttons" id="categories">
+{% for category in categories %}
+    <label class="btn btn-primary">
+        <input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}" {% if category in selected_categories %}checked="checked"{% endif %}> {{ _(category) }}
+    </label>
+{% endfor %}
+</div><!-- / categories_checkboxes -->
