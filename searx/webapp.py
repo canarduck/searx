@@ -17,6 +17,10 @@ along with searx. If not, see < http://www.gnu.org/licenses/ >.
 (C) 2013- by Adam Tauber, <asciimoo@gmail.com>
 '''
 
+from gevent import monkey
+monkey.patch_all()
+
+
 if __name__ == '__main__':
     from sys import path
     from os.path import realpath, dirname
@@ -35,8 +39,7 @@ from flask import (
 from flask.ext.babel import Babel, gettext, format_date
 from searx import settings, searx_dir
 from searx.engines import (
-    search as do_search, categories, engines, get_engines_stats,
-    engine_shortcuts
+    categories, engines, get_engines_stats, engine_shortcuts
 )
 from searx.utils import (
     UnicodeWriter, highlight_content, html_to_text, get_themes
@@ -187,12 +190,7 @@ def index():
             'index.html',
         )
 
-    # TODO moar refactor - do_search integration into Search class
-    search.results, search.suggestions = do_search(search.query,
-                                                   request,
-                                                   search.engines,
-                                                   search.pageno,
-                                                   search.lang)
+    search.results, search.suggestions = search.search(request)
 
     for result in search.results:
 
@@ -427,7 +425,6 @@ def preferences():
 @app.route('/stats', methods=['GET'])
 def stats():
     """Render engine statistics page."""
-    global categories
     stats = get_engines_stats()
     return render(
         'stats.html',
@@ -473,14 +470,14 @@ def favicon():
 
 
 def run():
-    from gevent import monkey
-    monkey.patch_all()
-
     app.run(
         debug=settings['server']['debug'],
         use_debugger=settings['server']['debug'],
         port=settings['server']['port']
     )
+
+
+application = app
 
 
 if __name__ == "__main__":

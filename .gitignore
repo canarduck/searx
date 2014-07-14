@@ -28,5 +28,6 @@ var/
 *.sublime-project
 *.sublime-workspace
 *.json
+*.orig
 
 searx/settings.yml
