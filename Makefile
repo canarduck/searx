@@ -45,6 +45,10 @@ minimal: bin/buildout minimal.cfg setup.py
 
 styles:
 	@lessc -x searx/static/default/less/style.less > searx/static/default/css/style.css
+	@lessc -x searx/static/bootstrax/less/style.less > searx/static/bootstrax/css/style.css
+
+scripts:
+	@minify searx/static/bootstrax/js/bootstrap/*.js searx/static/bootstrax/js/bootstrap-multiselect.js searx/static/bootstrax/js/script.js> searx/static/bootstrax/js/searx.js
 
 locales:
 	@pybabel compile -d searx/translations

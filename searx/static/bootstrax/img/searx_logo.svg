@@ -85,18 +85,6 @@
          stdDeviation="6.4759344"
          id="feGaussianBlur4026" />
     </filter>
-    <filter
-       inkscape:collect="always"
-       id="filter3983"
-       x="-1.0608404"
-       width="3.1216809"
-       y="-0.31017202"
-       height="1.620344">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="9.392858"
-         id="feGaussianBlur3985" />
-    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -105,9 +93,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="30.708726"
-     inkscape:cy="948.08556"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="256.28099"
+     inkscape:cy="900.46331"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -199,5 +187,16 @@
        rx="2.8666623"
        ry="9.0007057"
        transform="matrix(0.74466525,-0.84318084,0.84318084,0.74466525,-35.543204,-26.349917)" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="-577.80725"
+       y="7.8644595"
+       id="text3003"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3005"
+         x="-577.80725"
+         y="7.8644595">searx</tspan></text>
   </g>
 </svg>

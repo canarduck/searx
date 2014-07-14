@@ -15,6 +15,7 @@
             <label for="categories" class="col-sm-2 control-label">{{ _('Default categories') }}</label>
             <div class="col-sm-10">
                 {% include 'bootstrax/categories.html' %}
+                 <span class="help-block">Choose what kind of stuff you mainly search for</span>
             </div>
         </div>
         <div class="form-group">
@@ -26,7 +27,6 @@
                     <option value="{{ lang_id }}" {% if lang_id == current_language %}selected{% endif %}>{{ lang_name }} ({{ country_name }} - {{ lang_id }})</option>
                     {% endfor %}
                 </select>
-                <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
             </div>
         </div>
         <div class="form-group">
@@ -37,7 +37,6 @@
                     <option value="{{ locale_id }}" {% if locale_id == current_locale %}selected{% endif %}>{{ locale_name }}</option>
                     {% endfor %}
                 </select>
-                <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
             </div>
         </div>
         <div class="form-group">
@@ -49,7 +48,7 @@
                     <option value="{{ backend }}" {% if backend == autocomplete %}selected{% endif %}>{{ backend }}</option>
                     {% endfor %}
                 </select>
-                <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+                <span class="help-block">Find stuff as you type</span>
             </div>
         </div>
         <div class="form-group">
@@ -59,7 +58,7 @@
                     <option value="POST" {% if method == 'POST' %}selected{% endif %}>POST</option>
                     <option value="GET" {% if method == 'GET' %}selected{% endif %}>GET</option>
                 </select>
-                <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+                <span class="help-block">Change how forms are submited, <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods" rel="external">learn more about request methods</a></span>
             </div>
         </div>
         <div class="form-group">
@@ -70,7 +69,7 @@
                     <option value="{{ name }}" {% if name == theme %}selected="selected"{% endif %}>{{ name }}</option>
                     {% endfor %}
                 </select>
-                <span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+                <span class="help-block">Change searx layout</span>
             </div>
         </div>
         <div class="form-group">
@@ -78,20 +77,22 @@
             <div class="col-sm-10">
                 <table class="table">
                     <tr>
-                        <th>{{ _('Engine name') }}</th>
+                        <th>{{ _('Engine name') }} (shortcut)</th>
                         <th>{{ _('Category') }}</th>
-                        <th>{{ _('Allow') }} / {{ _('Block') }}</th>
+                        <th>{{ _('Allow / Block') }}</th>
                     </tr>
                 {% for (categ,search_engines) in categs %}
                     {% for search_engine in search_engines %}
                         {% if not search_engine.private %}
                         <tr>
-                            <td>{{ search_engine.name }} ({{ shortcuts[search_engine.name] }})</td>
+                            <td>{{ search_engine.name }} (!{{ shortcuts[search_engine.name] }})</td>
                             <td>{{ _(categ) }}</td>
-                            <td class="engine_checkbox">
-                                <input type="checkbox" id="engine_{{ categ }}_{{ search_engine.name|replace(' ', '_') }}" name="engine_{{ search_engine.name }}"{% if search_engine.name in blocked_engines %} checked="checked"{% endif %} />
-                                <label class="allow" for="engine_{{ categ }}_{{ search_engine.name|replace(' ', '_') }}">{{ _('Allow') }}</label>
-                                <label class="deny" for="engine_{{ categ }}_{{ search_engine.name|replace(' ', '_') }}">{{ _('Block') }}</label>
+                            <td>
+                                <div class="btn-group btn-toggle" data-toggle="buttons">
+                                <label class="btn {% if search_engine.name in blocked_engines %}btn-danger active{% else %}btn-default{% endif %}" data-btn-class="danger" data-btn-label-default="{{ _('Allowed') }}" data-btn-label-toggled="{{ _('Blocked') }}">
+                                    <input type="checkbox" name="engine_{{ search_engine.name|replace(' ', '_') }}" id="engine_{{ categ }}_{{ search_engine.name|replace(' ', '_') }}" {% if search_engine.name in blocked_engines %}checked{% endif %}> {% if search_engine.name in blocked_engines %}{{ _('Blocked') }}{% else %}{{ _('Allowed') }}{% endif %}
+                                </label>
+                                </div>
                             </td>
                         </tr>
                         {% endif %}
@@ -100,6 +101,12 @@
                 </table>
             </div>
         </div>
-        <button type="submit" class="btn btn-default">{{ _('save') }}</button>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <a href="{{ url_for('index') }}" class="btn btn-default">{{ _('back') }}</a>
+                <button type="submit" class="btn btn-primary">{{ _('save') }}</button>
+            </div>
+        </div>
+        
     </form>
 {% endblock %}

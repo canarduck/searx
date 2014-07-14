@@ -1,5 +1,6 @@
-{% extends "bootstrax/home.html" %}
-
+{% extends "bootstrax/base.html" %}
+{% block navbar_search %}{% endblock %}
 {% block content %}
+    <img src="{{ url_for('static', filename='img/searx_logo.png') }}" alt="searx" class="img-responsive hidden-sm" id="logo">
     {% include 'bootstrax/search_full.html' %}
 {% endblock %}
